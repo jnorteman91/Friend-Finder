@@ -209,6 +209,70 @@
             </p>
         </footer>
     </div>
+    <script type="text/javascript">
+    //Submit Listener
+    $('#submit').on('click', function(event) {
+        event.preventDefault();
+        //Local Variables
+        var matchCompatiability = $('.modal-title');
+        var modalBody = $('modal-body');
+        //Responses
+        var name =$('#name').val().trim();
+        var photo = $('#photo').val();
+        var item1 = parseInt($('#item1').val());
+        var item2 = parseInt($('#item2').val());
+        var item3 = parseInt($('#item3').val());
+        var item4 = parseInt($('#item4').val());
+        var item5 = parseInt($('#item5').val());
+        var item6 = parseInt($('#item6').val());
+        var item7 = parseInt($('#item7').val());
+        var item8 = parseInt($('#item8').val());
+        var item9 = parseInt($('#item9').val());
+        var item10 = parseInt($('#item10').val());
+        //Set data for the server
+        var userData = {
+            name: name,
+            photo: photo,
+            scores: [
+                item1,
+                item2,
+                item3,
+                item4,
+                item5,
+                item6,
+                item7,
+                item8,
+                item9,
+                item10,
+            ]
+        };
+        //If the response is Valid
+        if (
+            (name !== '') && (photo !== '') && (!isNaN(item1)) && (!isNaN(item2)) && (!isNaN(item3)) && (!isNaN(item4)) && (!isNaN(item5)) && (!isNaN(item6)) && (!isNaN(item7)) && (!isNaN(item8)) && (!isNaN(item9)) && (!isNaN(item10)) 
+        ) {
+            var currentURL = window.location.origin;
+
+            $.post(currentURL + "/api/friends", userData, function(data) {
+                if (data.name !== undefined) {
+                    matchCompatiability.html('Your match...');
+                    modalBody.html('<p>...is ' + data.name + '!</p><img src=" ' + data.photo + '" height="175">');
+                } else {
+                    matchCompatiability.html('Not enough information!');
+                    modalBody.html('<p>The form requires more information to match you properly</p>');
+                }
+
+                $('.modal').modal('toggle');
+            });
+        } else {
+            matchCompatiability.html('An error has occured...');
+            modalBody.html('Please fill out the form in its entirety.');
+
+            $('.modal').modal('toggle');
+        }
+    });
+
+    $('#friend-form').reset();
+    </script>
     
 </body>
 </html>
